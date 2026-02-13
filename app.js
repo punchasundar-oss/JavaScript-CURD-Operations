@@ -87,7 +87,317 @@ function preLoadCalculations(){
 
 
 
-function displayIndexBtn(){
+function displayIndexBtn()
+
+
+// ============================================
+// HERO COMPONENT
+// ============================================
+/**
+ * Hero Component - A reusable, configurable landing page hero section
+ * 
+ * This component enhances the existing semantic HTML hero section with
+ * interactive behaviors including smooth scrolling, navigation, and
+ * configurable CTA actions.
+ * 
+ * Usage:
+ *   Hero.init({
+ *     headline: 'Custom Headline',
+ *     primaryCTA: { label: 'Start Now', action: 'scroll', target: '#contact' },
+ *     secondaryCTA: { label: 'Learn More', action: 'navigate', target: '/about' }
+ *   });
+ */
+const Hero = (function() {
+    'use strict';
+
+    // Default configuration matching the user story requirements
+    const defaults = {
+        headline: 'Build Smarter Digital Products',
+        subheadline: 'We design and engineer scalable software solutions that help startups and enterprises move faster with confidence.',
+        primaryCTA: {
+            label: 'Get Started',
+            action: 'scroll',        // 'scroll' | 'navigate' | Function
+            target: '#contact',      // CSS selector or URL
+            fallbackUrl: '/contact'  // Used if scroll target not found
+        },
+        secondaryCTA: {
+            label: 'Talk to Us',
+            action: 'navigate',      // 'navigate' | Function
+            target: '/booking',      // URL
+            fallbackUrl: '/contact'  // Used if booking route unavailable
+        },
+        image: {
+            src: 'https://images.unsplash.com/photo-1551434678-e076c223a692?w=600&h=400&fit=crop',
+            alt: 'Abstract illustration representing modern digital products',
+            aspectRatio: '3/2'
+        },
+        theme: 'light'                // 'light' | 'dark'
+    };
+
+    // Store merged configuration
+    let config = {};
+
+    /**
+     * Deep merge utility for configuration objects
+     * @param {Object} target - Target object
+     * @param {Object} source - Source object to merge
+     * @returns {Object} Merged object
+     */
+    function mergeConfig(target, source) {
+        const result = { ...target };
+        for (const key in source) {
+            if (source[key] && typeof source[key] === 'object' && !Array.isArray(source[key])) {
+                result[key] = mergeConfig(target[key] || {}, source[key]);
+            } else {
+                result[key] = source[key];
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Smooth scroll to a target element
+     * @param {string} target - CSS selector for target element
+     * @returns {boolean} True if target found and scrolled, false otherwise
+     */
+    function smoothScrollTo(target) {
+        const element = document.querySelector(target);
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Navigate to a URL
+     * @param {string} url - URL to navigate to
+     */
+    function navigateTo(url) {
+        if (url && typeof url === 'string') {
+            window.location.href = url;
+        }
+    }
+
+    /**
+     * Handle primary CTA click
+     * Default: Scroll to #contact if present, otherwise navigate to /contact
+     */
+    function handlePrimaryCTA() {
+        const { action, target, fallbackUrl } = config.primaryCTA;
+
+        // If action is a custom function, call it
+        if (typeof action === 'function') {
+            action(config.primaryCTA);
+            return;
+        }
+
+        // Default scroll behavior
+        if (action === 'scroll') {
+            const scrolled = smoothScrollTo(target);
+            if (!scrolled && fallbackUrl) {
+                navigateTo(fallbackUrl);
+            }
+            return;
+        }
+
+        // Navigate behavior
+        if (action === 'navigate') {
+            navigateTo(target || fallbackUrl);
+        }
+    }
+
+    /**
+     * Handle secondary CTA click
+     * Default: Navigate to /booking, fallback to /contact
+     */
+    function handleSecondaryCTA() {
+        const { action, target, fallbackUrl } = config.secondaryCTA;
+
+        // If action is a custom function, call it
+        if (typeof action === 'function') {
+            action(config.secondaryCTA);
+            return;
+        }
+
+        // Default navigate behavior with fallback
+        const destination = target || fallbackUrl || '/contact';
+        navigateTo(destination);
+    }
+
+    /**
+     * Update hero content from configuration
+     * @param {HTMLElement} container - Hero container element
+     */
+    function updateContent(container) {
+        // Update headline
+        const headlineEl = container.querySelector('.hero-headline');
+        if (headlineEl && config.headline) {
+            headlineEl.textContent = config.headline;
+        }
+
+        // Update subheadline
+        const subheadlineEl = container.querySelector('.hero-subheadline');
+        if (subheadlineEl && config.subheadline) {
+            subheadlineEl.textContent = config.subheadline;
+        }
+
+        // Update primary CTA
+        const primaryCTAEl = container.querySelector('[data-hero-action="get-started"]');
+        if (primaryCTAEl && config.primaryCTA.label) {
+            primaryCTAEl.textContent = config.primaryCTA.label;
+        }
+
+        // Update secondary CTA
+        const secondaryCTAEl = container.querySelector('[data-hero-action="talk-to-us"]');
+        if (secondaryCTAEl && config.secondaryCTA.label) {
+            secondaryCTAEl.textContent = config.secondaryCTA.label;
+        }
+
+        // Update image
+        const imageEl = container.querySelector('.hero-image');
+        if (imageEl) {
+            if (config.image.src) imageEl.src = config.image.src;
+            if (config.image.alt) imageEl.alt = config.image.alt;
+            if (config.image.aspectRatio) {
+                imageEl.style.aspectRatio = config.image.aspectRatio;
+            }
+        }
+
+        // Apply theme
+        if (config.theme) {
+            container.setAttribute('data-theme', config.theme);
+        }
+    }
+
+    /**
+     * Attach event listeners to CTA buttons
+     * @param {HTMLElement} container - Hero container element
+     */
+    function attachEventListeners(container) {
+        const primaryCTA = container.querySelector('[data-hero-action="get-started"]');
+        const secondaryCTA = container.querySelector('[data-hero-action="talk-to-us"]');
+
+        if (primaryCTA) {
+            primaryCTA.addEventListener('click', handlePrimaryCTA);
+            
+            // Keyboard accessibility - handle Enter and Space
+            primaryCTA.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    handlePrimaryCTA();
+                }
+            });
+        }
+
+        if (secondaryCTA) {
+            secondaryCTA.addEventListener('click', handleSecondaryCTA);
+            
+            // Keyboard accessibility - handle Enter and Space
+            secondaryCTA.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    handleSecondaryCTA();
+                }
+            });
+        }
+    }
+
+    /**
+     * Handle image load error
+     * @param {HTMLElement} container - Hero container element
+     */
+    function handleImageError(container) {
+        const imageEl = container.querySelector('.hero-image');
+        if (imageEl) {
+            imageEl.addEventListener('error', () => {
+                // Show placeholder background instead of broken image
+                imageEl.style.display = 'none';
+                const visualContainer = container.querySelector('.hero-visual');
+                if (visualContainer) {
+                    visualContainer.classList.add('hero-visual-placeholder');
+                }
+            });
+        }
+    }
+
+    // Public API
+    return {
+        /**
+         * Initialize the Hero component
+         * @param {Object} options - Configuration options to override defaults
+         * @param {string} selector - CSS selector for hero container (default: '#hero')
+         */
+        init(options = {}, selector = '#hero') {
+            // Merge configuration
+            config = mergeConfig(defaults, options);
+
+            // Find hero container
+            const container = document.querySelector(selector);
+            if (!container) {
+                console.warn(`Hero component: Container not found for selector "${selector}"`);
+                return this;
+            }
+
+            // Update content from config
+            updateContent(container);
+
+            // Attach event listeners
+            attachEventListeners(container);
+
+            // Handle image errors gracefully
+            handleImageError(container);
+
+            // Mark as initialized
+            container.setAttribute('data-hero-initialized', 'true');
+
+            return this;
+        },
+
+        /**
+         * Get current configuration
+         * @returns {Object} Current configuration
+         */
+        getConfig() {
+            return { ...config };
+        },
+
+        /**
+         * Update configuration dynamically
+         * @param {Object} options - New configuration options
+         */
+        update(options) {
+            config = mergeConfig(config, options);
+            const container = document.querySelector('#hero');
+            if (container) {
+                updateContent(container);
+            }
+            return this;
+        },
+
+        /**
+         * Programmatically trigger primary CTA action
+         */
+        triggerPrimary() {
+            handlePrimaryCTA();
+        },
+
+        /**
+         * Programmatically trigger secondary CTA action
+         */
+        triggerSecondary() {
+            handleSecondaryCTA();
+        }
+    };
+})();
+
+
+// ============================================
+// INITIALIZE HERO COMPONENT ON PAGE LOAD
+// ============================================
+document.addEventListener('DOMContentLoaded', () => {
+    Hero.init();
+});{
     preLoadCalculations()
 
     const pagination = document.querySelector('.pagination')
