@@ -71,6 +71,48 @@ The hero section is a semantic `<section>` positioned at the top of the page:
 - `data-hero-action="get-started"` - Primary CTA hook
 - `data-hero-action="talk-to-us"` - Secondary CTA hook
 
+### JavaScript API
+The Hero component is defined in `app.js` as an IIFE exposing:
+
+```javascript
+// Initialize with defaults
+Hero.init();
+
+// Initialize with custom config
+Hero.init({
+    headline: 'Custom Headline',
+    subheadline: 'Custom subheadline text.',
+    primaryCTA: {
+        label: 'Start Now',
+        action: 'scroll',      // or 'navigate' or function
+        target: '#contact',    // CSS selector or URL
+        fallbackUrl: '/contact'
+    },
+    secondaryCTA: {
+        label: 'Learn More',
+        action: 'navigate',    // or function
+        target: '/booking',
+        fallbackUrl: '/contact'
+    },
+    image: {
+        src: 'https://example.com/image.jpg',
+        alt: 'Description',
+        aspectRatio: '3/2'
+    },
+    theme: 'light'             // 'light' | 'dark'
+});
+
+// Get current config
+const config = Hero.getConfig();
+
+// Update dynamically
+Hero.update({ headline: 'New Headline' });
+
+// Programmatically trigger CTAs
+Hero.triggerPrimary();
+Hero.triggerSecondary();
+```
+
 ## Coding Standards
 - Use semantic HTML5 elements
 - BEM-like naming for CSS classes (component-based)
