@@ -60,12 +60,31 @@ The hero section is a semantic `<section>` positioned at the top of the page:
 | `.hero-container` | Layout container (flex/grid) |
 | `.hero-content` | Text content column |
 | `.hero-visual` | Image column |
-| `.hero-headline` | H1 styling |
+| `.hero-headline` | H1 styling (fluid typography) |
 | `.hero-subheadline` | Paragraph styling |
 | `.hero-cta-group` | Button container |
-| `.hero-cta-primary` | Primary button style |
-| `.hero-cta-secondary` | Secondary button style |
+| `.hero-cta` | Base button styles |
+| `.hero-cta-primary` | Primary button (filled) |
+| `.hero-cta-secondary` | Secondary button (outline) |
 | `.hero-image` | Image element styling |
+| `.hero-visual-placeholder` | Fallback for failed image |
+
+### CSS Variables (Hero-specific)
+```css
+--hero-bg-light: #f8f9fa;
+--hero-text-light: #212529;
+--hero-text-secondary: #495057;
+--hero-primary-bg: var(--red1);
+--hero-primary-text: #ffffff;
+--hero-focus-color: #2563eb;
+```
+
+### Responsive Breakpoints
+| Breakpoint | Layout |
+|------------|--------|
+| ≥1024px | Two-column flex, text left, image right |
+| 768px-1023px | Reduced gap, slightly smaller text |
+| ≤767px | Stacked column, full-width CTAs, centered text |
 
 ### Data Attributes
 - `data-hero-action="get-started"` - Primary CTA hook
@@ -120,10 +139,6 @@ Hero.triggerSecondary();
 - Progressive enhancement (content works without JS)
 - No inline styles or scripts
 - HTTPS URLs only for external resources
-
-## Responsive Breakpoints
-- Desktop: ≥1024px (two-column layout)
-- Mobile: ≤768px (stacked layout)
 
 ## Git Workflow
 - Commit after each step completion
