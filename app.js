@@ -86,10 +86,6 @@ function preLoadCalculations(){
 }
 
 
-
-function displayIndexBtn()
-
-
 // ============================================
 // HERO COMPONENT
 // ============================================
@@ -397,7 +393,10 @@ const Hero = (function() {
 // ============================================
 document.addEventListener('DOMContentLoaded', () => {
     Hero.init();
-});{
+});
+
+
+function displayIndexBtn(){
     preLoadCalculations()
 
     const pagination = document.querySelector('.pagination')
