@@ -172,6 +172,35 @@ Hero.triggerSecondary();
 - No inline styles or scripts
 - HTTPS URLs only for external resources
 
+## Testing
+
+### Hero Component Tests
+Tests are located in `hero.test.js`. To run tests:
+
+1. Uncomment the test script in `index.html`:
+   ```html
+   <script src="hero.test.js"></script>
+   ```
+
+2. Open the browser console to see test results
+
+3. Run full test suite:
+   ```javascript
+   HeroTests.run()
+   ```
+
+4. Run quick smoke test:
+   ```javascript
+   HeroTests.smoke()
+   ```
+
+### Test Coverage
+- Component initialization
+- Default configuration values
+- DOM element rendering
+- Accessibility features
+- Configuration updates
+
 ## Git Workflow
 - Commit after each step completion
 - Use descriptive commit messages
