@@ -132,6 +132,38 @@ Hero.triggerPrimary();
 Hero.triggerSecondary();
 ```
 
+### CTA Behaviors
+
+**Primary CTA (Get Started)**
+- Default: Smooth scroll to `#contact` element
+- Fallback: Navigate to `/contact` if element not found
+- Configurable: `'scroll'`, `'navigate'`, or custom function
+
+**Secondary CTA (Talk to Us)**
+- Default: Navigate to `/booking`
+- Fallback: Navigate to `/contact` if booking unavailable
+- Configurable: `'navigate'` or custom function
+
+### Accessibility Features
+
+**Keyboard Navigation**
+- Both CTAs are native `<button>` elements (naturally focusable)
+- `Enter` key activates the button
+- `Space` key activates the button (with `preventDefault()` to avoid scrolling)
+- Tab order follows DOM sequence (no focus trapping)
+
+**Focus Management**
+- Visible focus outline: `3px solid` with `--hero-focus-color`
+- Outline offset: `2px` for clear visibility
+- Focus styles applied via `:focus-visible` (modern browsers)
+- Meets WCAG 2.1 AA contrast requirements
+
+**Semantic HTML**
+- Native `<button>` elements (not styled `<a>` tags)
+- `type="button"` prevents form submission
+- `aria-labelledby` associates section with heading
+- No unnecessary ARIA roles (uses native semantics)
+
 ## Coding Standards
 - Use semantic HTML5 elements
 - BEM-like naming for CSS classes (component-based)
