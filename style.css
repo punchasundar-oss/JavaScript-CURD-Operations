@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300&family=Poppins:wght@100;200;300;400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300&family=Poppins:wght@100;200;300;400;500;600;700&display=swap');
 
 
 :root{
@@ -12,6 +12,18 @@
     --dark8: #dae0e7;
     --dark9: #262a2e;
     --red1: #902e31;
+    
+    /* Hero Component Variables */
+    --hero-bg-light: #f8f9fa;
+    --hero-text-light: #212529;
+    --hero-text-secondary: #495057;
+    --hero-primary-bg: var(--red1);
+    --hero-primary-text: #ffffff;
+    --hero-secondary-border: var(--dark6);
+    --hero-secondary-text: var(--dark3);
+    --hero-secondary-bg-hover: var(--dark8);
+    --hero-focus-color: #2563eb;
+    --hero-placeholder-bg: var(--dark8);
 }
 
 *{
@@ -23,8 +35,9 @@
 
 body{
     display: flex;
-    justify-content: center;
-    align-items: flex-start;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
     min-height: 100vh;
     background: linear-gradient(var(--red1) 50%, var(--dark2) 50%);
 }
@@ -398,4 +411,249 @@ input::-webkit-outer-spin-button{
     transform: scale(1);
     opacity: 1;
     visibility: visible;
+}
+
+
+/* ============================================
+   HERO COMPONENT STYLES
+   ============================================ */
+
+/* Hero Section - Full-width landing area */
+.hero {
+    width: 100%;
+    background: var(--hero-bg-light);
+    padding: 4rem 1.5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Dark theme variant support */
+.hero[data-theme="dark"] {
+    --hero-bg-light: var(--dark3);
+    --hero-text-light: var(--dark8);
+    --hero-text-secondary: var(--dark7);
+    --hero-secondary-border: var(--dark6);
+    --hero-secondary-text: var(--dark8);
+    --hero-secondary-bg-hover: var(--dark4);
+}
+
+/* Container for centered content with max-width */
+.hero-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 3rem;
+}
+
+/* Content column - text and CTAs */
+.hero-content {
+    flex: 1;
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* Headline - H1 with strong visual hierarchy */
+.hero-headline {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--hero-text-light);
+    margin: 0;
+}
+
+/* Subheadline - supporting paragraph */
+.hero-subheadline {
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    font-weight: 400;
+    line-height: 1.6;
+    color: var(--hero-text-secondary);
+    margin: 0;
+    max-width: 500px;
+}
+
+/* CTA Button Group */
+.hero-cta-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 0.5rem;
+}
+
+/* Base CTA Button Styles */
+.hero-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.875rem 1.75rem;
+    font-size: 1rem;
+    font-weight: 500;
+    text-decoration: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    border: 2px solid transparent;
+    min-height: 48px;
+    min-width: 140px;
+}
+
+/* Primary CTA - filled button with accent color */
+.hero-cta-primary {
+    background-color: var(--hero-primary-bg);
+    color: var(--hero-primary-text);
+    border-color: var(--hero-primary-bg);
+}
+
+.hero-cta-primary:hover {
+    filter: brightness(1.1);
+    transform: translateY(-1px);
+}
+
+.hero-cta-primary:focus-visible {
+    outline: 3px solid var(--hero-focus-color);
+    outline-offset: 2px;
+}
+
+.hero-cta-primary:active {
+    transform: translateY(0);
+}
+
+/* Secondary CTA - outline button */
+.hero-cta-secondary {
+    background-color: transparent;
+    color: var(--hero-secondary-text);
+    border-color: var(--hero-secondary-border);
+}
+
+.hero-cta-secondary:hover {
+    background-color: var(--hero-secondary-bg-hover);
+}
+
+.hero-cta-secondary:focus-visible {
+    outline: 3px solid var(--hero-focus-color);
+    outline-offset: 2px;
+}
+
+/* Visual column - image container */
+.hero-visual {
+    flex: 1;
+    max-width: 600px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Hero Image */
+.hero-image {
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    background-color: var(--hero-placeholder-bg);
+}
+
+/* Placeholder for failed image load */
+.hero-visual-placeholder {
+    width: 100%;
+    max-width: 600px;
+    aspect-ratio: 3 / 2;
+    background: linear-gradient(135deg, var(--dark8) 0%, var(--dark7) 100%);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-visual-placeholder::after {
+    content: 'Image';
+    color: var(--dark6);
+    font-size: 1rem;
+}
+
+
+/* ============================================
+   RESPONSIVE BREAKPOINTS
+   ============================================ */
+
+/* Tablet and smaller desktop (768px - 1023px) */
+@media (max-width: 1023px) {
+    .hero {
+        padding: 3rem 1.5rem;
+    }
+
+    .hero-container {
+        gap: 2rem;
+    }
+
+    .hero-headline {
+        font-size: clamp(1.75rem, 4vw, 2.5rem);
+    }
+
+    .hero-image {
+        max-width: 400px;
+    }
+}
+
+/* Mobile (up to 767px) - Stacked layout */
+@media (max-width: 767px) {
+    .hero {
+        padding: 2.5rem 1rem;
+    }
+
+    .hero-container {
+        flex-direction: column;
+        text-align: center;
+        gap: 2rem;
+    }
+
+    .hero-content {
+        max-width: 100%;
+        order: 1;
+    }
+
+    .hero-headline {
+        font-size: clamp(1.5rem, 6vw, 2rem);
+    }
+
+    .hero-subheadline {
+        max-width: 100%;
+    }
+
+    .hero-cta-group {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.75rem;
+    }
+
+    .hero-cta {
+        width: 100%;
+        min-height: 48px;
+    }
+
+    .hero-visual {
+        order: 2;
+        max-width: 100%;
+    }
+
+    .hero-image,
+    .hero-visual-placeholder {
+        max-width: 100%;
+    }
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+    .hero-cta {
+        transition: none;
+    }
+
+    .hero-cta:hover {
+        transform: none;
+    }
 }
